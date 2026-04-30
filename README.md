@@ -10,42 +10,53 @@ To write a program to predict the price of the house and number of occupants in 
 ## Algorithm
 1.Load California housing data, select features and targets, and split into training and testing sets. 2.Scale both X (features) and Y (targets) using StandardScaler. 3.Use SGDRegressor wrapped in MultiOutputRegressor to train on the scaled training data. 4.Predict on test data, inverse transform the results, and calculate the mean squared error.
 ## Program:
-```
 /*
 Program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor.
-Developed by:MANIKANDAN M
-RegisterNumber:212224040183 
+Developed by: lavanya D
+RegisterNumber:  212225040195
 */
+# Program to implement SGD Regressor for Multivariate Linear Regression
+# Developed by: SANTHIYA G
+# Register Number:N21225230248
+
 import numpy as np
-from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import SGDRegressor
-from sklearn.multioutput import MultiOutputRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
-data=fetch_california_housing()
-X=data.data[:,:3]
-Y=np.column_stack((data.target,data.data[:,6]))
-X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.2,random_state=42)
-scaler_X=StandardScaler()
-scaler_Y=StandardScaler()
-X_train =scaler_X.fit_transform(X_train)
-X_test=scaler_X.transform(X_test)
-Y_train=scaler_Y.fit_transform(Y_train)
-Y_test=scaler_Y.transform(Y_test)
-sgd=SGDRegressor(max_iter=1000, tol=1e-3)
-multi_output_sgd=MultiOutputRegressor(sgd)
-multi_output_sgd.fit(X_train,Y_train)
-Y_pred=multi_output_sgd.predict(X_test)
-Y_pred=scaler_Y.inverse_transform(Y_pred)
-Y_test=scaler_Y.inverse_transform(Y_test)
-mse=mean_squared_error(Y_test,Y_pred)
-print("Mean Square Error:",mse)
-print("\nPredictions:\n",Y_pred[:5])
+
+X = np.array([
+    [1000, 2],
+    [1500, 3],
+    [1800, 3],
+    [2400, 4],
+    [3000, 4]
+])
+
+Y = np.array([
+    [50, 2],
+    [75, 3],
+    [90, 3],
+    [120, 4],
+    [150, 5]
+])
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+model = SGDRegressor(max_iter=1000, learning_rate='invscaling')
+
+model.fit(X_scaled, Y[:, 0])
+price_pred = model.predict(X_scaled)
+
+model.fit(X_scaled, Y[:, 1])
+occupant_pred = model.predict(X_scaled)
+
+print("Predicted House Prices:", price_pred)
+print("Predicted Number of Occupants:", occupant_pred)
 ```
 
 ## Output:
-<img width="716" height="189" alt="image" src="https://github.com/user-attachments/assets/6a1be39f-04e6-4fd3-abb0-5dafa2a1ad5c" />
+<img width="940" height="63" alt="image" src="https://github.com/user-attachments/assets/b7ddec44-e413-4157-85d4-4488512307ae" />
+
 
 
 ## Result:
